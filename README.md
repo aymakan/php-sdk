@@ -1,5 +1,5 @@
 # Aymakan SDK (PHP)
-Amazon Pay API Integration
+Aymakan API Integration
 
 ## Requirements
 
@@ -91,24 +91,13 @@ Below is an example on how to make the GetCities API call:
 
 ```php
 <?php
-namespace aymakan;
-
 
 $response = $client->getCityList($);
 
 ```
-### Shipping Methods
 
-#### Track Shipping
+ Sample Response
 
-
-Below is an example on how to make the TrackShipment API call:
-
-```php
-
-$response = $client->trackShipment('AY120266');
-echo $response . "\n";
-```
 ```json
 {
   "success": true,
@@ -122,11 +111,37 @@ echo $response . "\n";
           "city_en": "Khobar",
           "city_ar": "الخبر"
         },
-        ...
-        ...
       ]
     }
 }
 ```
 
+### Shipping Methods
 
+#### Track Shipping
+
+
+Below is an example on how to make the TrackShipment API call:
+
+```php
+
+$response = $client->trackShipment('AY120266');
+echo $response . "\n";
+```
+ Sample Response
+
+```json
+ {
+   "success": true,
+   "data": {
+     "shipments": [
+       {
+         "tracking_number": "121",
+         "requested_by": "Test",
+         "price_set": "111",
+         },
+         ...
+        ...
+     ]
+ }
+```
