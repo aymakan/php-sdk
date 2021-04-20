@@ -115,9 +115,13 @@ class Client {
     {
         $get_data = $this->callAPI('GET', $this->config['url'].'/cities', false);
         $response = json_decode($get_data, true);
-        $cities =json_encode($response['data']);
-        if (!$cities) {
-            $cities =json_encode($response['errors']);
+        if(isset($response['error']))
+        {
+            $cities = json_encode($response['message']);
+        }
+        if(isset($response['data']))
+        {
+            $cities = json_encode($response);
         }
         return $cities;
     }
@@ -125,6 +129,8 @@ class Client {
     /**
      * This method will track shipment
      * @access public
+     * @return  response
+     * @param    $id   Tracking code
      */
     public function trackShipment($id)
     {
@@ -132,13 +138,117 @@ class Client {
         $response = json_decode($get_data, true);
         if(isset($response['error']))
         {
-            $cities = json_encode($response['message']);
+            $shipment = json_encode($response['message']);
         }
         if(isset($response['data']))
         {
-            $cities = json_encode($response['data']);
+            $shipment = json_encode($response);
         }
-        return $cities;
+        return $shipment;
+    }
+
+    /**
+     * This method will track shipment by reference
+     * @access public
+     * @return  response
+     * @param    $id   Reference
+     */
+    public function shipmentByReference($id)
+    {
+        $get_data = $this->callAPI('GET', $this->config['url'].'/shipping/by_reference?referencecodes='.$id, false);
+        $response = json_decode($get_data, true);
+        if(isset($response['error']))
+        {
+            $shipment = json_encode($response['message']);
+        }
+        if(isset($response['data']))
+        {
+            $shipment = json_encode($response);
+        }
+        return $shipment;
+    }
+
+    /**
+     * This method will fetch shipment label
+     * @access public
+     * @return  response
+     * @param    $id   Tracking code
+     */
+    public function getShipmentLabel($id)
+    {
+        $get_data = $this->callAPI('GET', $this->config['url'].'/shipping/awb/tracking?tracking_number='.$id, false);
+        $response = json_decode($get_data, true);
+        if(isset($response['error']))
+        {
+            $label = json_encode($response['message']);
+        }
+        if(isset($response['data']))
+        {
+            $label = json_encode($response);
+        }
+        return $label;
+    }
+
+    /**
+     * This method will fetch bulk shipment label
+     * @access public
+     * @return  response
+     * @param    $id   Tracking code
+     */
+    public function getBulkShipmentLabel($id)
+    {
+        $get_data = $this->callAPI('GET', $this->config['url'].'/shipping/bulk_awb/trackings?tracking_codes='.$id, false);
+        $response = json_decode($get_data, true);
+        if(isset($response['error']))
+        {
+            $label = json_encode($response['message']);
+        }
+        if(isset($response['data']))
+        {
+            $label = json_encode($response);
+        }
+        return $label;
+    }
+
+    /**
+     * This method will fetch customer shipments
+     * @access public
+     * @return  response
+     */
+    public function getCustomerShipments()
+    {
+        $get_data = $this->callAPI('GET', $this->config['url'].'/customer/shipments', false);
+        $response = json_decode($get_data, true);
+        if(isset($response['error']))
+        {
+            $label = json_encode($response['message']);
+        }
+        if(isset($response['data']))
+        {
+            $label = json_encode($response);
+        }
+        return $label;
+    }
+
+    /**
+     * This method will cancel shipment
+     * @access public
+     * @return  response
+     * @param    $data   parameter array
+     */
+    public function cancelShipment($data)
+    {
+        $get_data = $this->callAPI('POST', $this->config['url'].'/shipping/cancel', json_encode($data));
+        $response = json_decode($get_data, true);
+        if(isset($response['error']))
+        {
+            $label = json_encode($response['message']);
+        }
+        if(isset($response['success']))
+        {
+            $label = json_encode($response);
+        }
+        return $label;
     }
 
 }

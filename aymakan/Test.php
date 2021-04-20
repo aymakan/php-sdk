@@ -14,4 +14,15 @@ $client->setEnv('Development');
 $client->getCityList();
 // track shipment
 $client->trackShipment('AY120266');
+// track shipment by reference
+$client->shipmentByReference('user_60744b72691b8');
+//  shipment label
+$client->getShipmentLabel('AY131915');
+// bulk shipment label
+$client->getBulkShipmentLabel('AY120266,BY9437');
+// customer shipments 
+$client->getCustomerShipments();
+//cancel shipment
+$data =  array("trackingcode" =>"AY120266" );
+$client->cancelShipment($data);
 ?>
