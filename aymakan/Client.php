@@ -1,5 +1,5 @@
 <?php
-namespace aymakan;
+namespace Aymakan;
 
 class Client {
 
@@ -231,6 +231,25 @@ class Client {
     }
 
     /**
+     * This method will create shipment
+     * @access public
+     */
+    public function createShipment($data)
+    {
+        $get_data = $this->callAPI('POST', $this->config['url'].'/shipping/create', json_encode($data));
+        $response = json_decode($get_data, true);
+        if(isset($response['error']))
+        {
+            $label = json_encode($response['errors']);
+        }
+        if(isset($response['success']))
+        {
+            $label = json_encode($response);
+        }
+        return $label;
+    }
+
+    /**
      * This method will cancel shipment
      * @access public
      * @return  response
@@ -239,6 +258,63 @@ class Client {
     public function cancelShipment($data)
     {
         $get_data = $this->callAPI('POST', $this->config['url'].'/shipping/cancel', json_encode($data));
+        $response = json_decode($get_data, true);
+        if(isset($response['error']))
+        {
+            $label = json_encode($response['message']);
+        }
+        if(isset($response['success']))
+        {
+            $label = json_encode($response);
+        }
+        return $label;
+    }
+
+    /**
+     * This method will fetch web hook
+     * @access public
+     */
+    public function getWebHook()
+    {
+        $get_data = $this->callAPI('GET', $this->config['url'].'/webhooks/list', false);
+        $response = json_decode($get_data, true);
+        if(isset($response['error']))
+        {
+            $label = json_encode($response['errors']);
+        }
+        if(isset($response['success']))
+        {
+            $label = json_encode($response);
+        }
+        return $label;
+    }
+
+    /**
+     * This method will create web hook
+     * @access public
+     */
+    public function createWebHook($data)
+    {
+        $get_data = $this->callAPI('POST', $this->config['url'].'/webhooks/create', json_encode($data));
+        $response = json_decode($get_data, true);
+        if(isset($response['error']))
+        {
+            $label = json_encode($response['errors']);
+        }
+        if(isset($response['success']))
+        {
+            $label = json_encode($response);
+        }
+        return $label;
+    }
+
+    /**
+     * This method will update web hook
+     * @access public
+     */
+    public function updateWebHook($data)
+    {
+        $get_data = $this->callAPI('PUT', $this->config['url'].'/webhooks/update', json_encode($data));
         $response = json_decode($get_data, true);
         if(isset($response['error']))
         {
