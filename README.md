@@ -271,6 +271,8 @@ Below is an example on how to make the Create Shipping  API call:
 $response = $client->createShipment($data);
 echo $response . "\n";
 ```
+Sample JSON Response
+
 
 ```json
 {
