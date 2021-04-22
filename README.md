@@ -4,7 +4,7 @@ Aymakan API Integration
 ## Requirements
 
 * Aymakan  account
- 
+
 
 * PHP 7.1 or higher
 * Curl 7.18 or higher
@@ -29,10 +29,10 @@ Support for PHP 7.0  is being deprecated. The SDK will work in these older envir
 
 #### Mandatory Parameters
 | Parameter    | variable name | Values          				|
-|--------------|---------------|------------------------------------------------|
-| URL  | `url` | Default : `null`				|
-| Access Token   | `token`  | Default : `null`				|
-| Environment   | `env`  | Default : `null`				|
+|--------------|---------------|--------------------------------|
+| URL          | `url`         | Default : `null`				|
+| Access Token | `token`       | Default : `null`				|
+| Environment  | `env`         | Default : `null`				|
 
 
 ## Setting Configuration
@@ -84,7 +84,7 @@ Below is an example on how to make the GetCities API call:
 ```php
 <?php
 
-$response = $client->getCityList($);
+$response = $client->getCityList();
 echo $response . "\n";
 
 ```
@@ -103,7 +103,7 @@ echo $response . "\n";
         {
           "city_en": "Khobar",
           "city_ar": "الخبر"
-        },
+        }
       ]
     }
 }
@@ -118,9 +118,9 @@ Below is an example on how to make the TrackShipment API call:
 
 #### Mandatory Parameter
 
-| Parameter    | variable name | Mandatory                
-|--------------|---------------|----------------
-| Tracking Code  | `trackingids` | Yes  
+| Parameter    |  variable name | Mandatory|
+|--------------|---------------|----------------|
+| Tracking Code  | `trackingids` | Yes |
 
 
 ```php
@@ -154,9 +154,9 @@ Below is an example on how to make the Shipment By Reference API call:
 
 #### Mandatory Parameter
 
-| Parameter    | variable name | Mandatory                
+| Parameter    | variable name | Mandatory
 |--------------|---------------|----------------
-| Reference Code  | `referencecodes` | Yes  
+| Reference Code  | `referencecodes` | Yes
 
 
 
@@ -183,7 +183,7 @@ echo $response . "\n";
    }
 ```
 
-#### Create Shipping 
+#### Create Shipping
 
 
 Below is an example on how to make the Create Shipping  API call:
@@ -192,36 +192,34 @@ Below is an example on how to make the Create Shipping  API call:
 ####  Parameter
 
 
-| Parameter                  | Type             | Mandatory | Description                                                                                                    |
-|----------------------------|------------------------------|-----------|-----------------------------------------------------------------------------------------------------------|
-
-| `requested_by`  | String| Yes        |The name of the person who is creating the shipping. It can be the employee name who is responsible for it                    |
-|  `declared_value`      |       Decimal     | Yes        | The amount of the order. This value is not visible on the shipping label.|
-| `declared_value_currency `              | String             | No       |The declared value currency. Default to SAR if no other currency is provided. Possible values are SAR, USD, AED. This value is not visible on the shipping label.         |
-| `reference `              | AlphaNumeric            | No        | The order reference if available. It should be unique. If the reference number is already used a validation error will be returned The reference has already been taken                    |
-|  `is_cod  `| Numeric (Bool) | No       | If order is cash on delivery, set to 1. Default is 0.                             |
-| `cod_amount`        | Decimal         | Conditional         | If is_cod is 1, then required, else optional. The COD amount which needs to be collected.|
-|  `currency`              |String                 | No         | The currency of the amount. Default to SAR.                 |
-| `delivery_name`                | String             | Yes        | The delivery person name to whom that shipping will be delivered.|
-|`delivery_city`          |   String        | Yes        |A predefined city name. Please check the Cities API. |
-|  `delivery_address`                | String              | Yes          | Delivery address.                                                         |
-|  `delivery_neighbourhood`    |     String        | Yes        | City neighborhood for the delivery.                                                                     |
-|`delivery_postcode`         |  String      |  No        | Delivery Post code        |
-| `delivery_country `                | String      | Yes        | MISO Code for the country. Default to `SA` for Saudi Arabia                                       |
-|  `delivery_phone `              | Number           | Yes        | Delivery Phone Number. Only digits should be provided
-|  `delivery_description `              | String           | No        | Any specific delivery description for that shipping |
-|  `collection_name `              | String           | Yes        | The main collection or entity or business name who is creating the shipping  |
-|  `collection_email `              | String           | Yes        | The collection email  |
-|  `collection_city`              | String           | Yes        | A predefined city name. Please check the Cities API. |
-|  `collection_address`              | String           | Yes        | Collection point address, from where the shipping will be collected |
-|  `collection_neighbourhood`              | String           | No        | City neighborhood for the Collection. |
-|  `collection_postcode`              | String           | No        | Collection point post code |
-|  `collection_country`              | String           | Yes        | ISO Code for the country. Default to SA for Saudi Arabia. |
-|  `collection_description`              | String           | No        | Any description for the collection of the shipping. |
-|  `weight`              | Decimal           | No        | The weight of the shipment |
-|  `pieces`              | Integer           | Yes        | The total number of pieces that single shipping will have. For example, some shipping will have more items, which can’t be enclosed in a single packaging, so it is possible to pack them in multiple cartons. Those number of cartons means pieces here.
- |
-|  `items_count`              | Integer           | No        | The total number of physical items in the shipment|
+| Parameter                  | Type             | Mandatory   |     Description                                                                                                    |
+|----------------------------|------------------|-------------|---------------------------------------------------------------------------------------------------------------     |
+|  `requested_by`              | String          | Yes                 | The name of the person who is creating the shipping. It can be the employee name who is responsible for it
+|  `declared_value`            | Decimal         | Yes                 | The amount of the order. This value is not visible on the shipping label.
+|  `declared_value_currency`   | String          | No                  | The declared value currency. Default to SAR if no other currency is provided. Possible values are SAR, USD, AED. This value is not visible on the shipping label.
+|  `reference `                | AlphaNumeric    | No                  | The order reference if available. It should be unique. If the reference number is already used a validation error will be returned The reference has already been taken
+|  `is_cod  `                  | Numeric (Bool)  | No                  | If order is cash on delivery, set to 1. Default is 0.
+|  `cod_amount`                | Decimal         | Conditional         | If is_cod is 1, then required, else optional. The COD amount which needs to be collected.
+|  `currency`                  | String          | No                  | The currency of the amount. Default to SAR.
+|  `delivery_name`             | String          | Yes                 | The delivery person name to whom that shipping will be delivered.
+|  `delivery_city`             | String          | Yes                 | A predefined city name. Please check the Cities API.
+|  `delivery_address`          | String          | Yes                 | Delivery address.
+|  `delivery_neighbourhood`    | String          | Yes                 | City neighborhood for the  delivery.
+|  `delivery_postcode`         | String          |  No                 | Delivery Post code
+|  `delivery_country `         | String          | Yes                 | MISO Code for the country. Default to `SA` for Saudi Arabia
+|  `delivery_phone `           | Number          | Yes                 | Delivery Phone Number. Only digits should be provided
+|  `delivery_description`      | String          | No                  | Any specific delivery description for that shipping
+|  `collection_name `          | String          | Yes                 | The main collection or entity or business name who is creating the shipping
+|  `collection_email `         | String          | Yes                 | The collection email
+|  `collection_city`           | String          | Yes                 | A predefined city name. Please check the Cities API.
+|  `collection_address`        | String          | Yes                 | Collection point address, from where the shipping will be collected
+|  `collection_neighbourhood`  | String          | No                  | City neighborhood for the Collection.
+|  `collection_postcode`       | String          | No                  | Collection point post code
+|  `collection_country`        | String          | Yes                 | ISO Code for the country. Default to SA for Saudi Arabia.
+|  `collection_description`    | String          | No                  | Any description for the collection of the shipping.
+|  `weight`                    | Decimal         | No                  | The weight of the shipment
+|  `pieces`                    | Integer         | Yes                 | The total number of pieces that single shipping will have. For example, some shipping will have more items, which can’t be enclosed in a single packaging, so it is possible to pack them in multiple cartons. Those number of cartons means pieces here.
+|  `items_count`               | Integer         | No                  | The total number of physical items in the shipment
 
 ```php
 
@@ -269,7 +267,7 @@ Below is an example on how to make the Create Shipping  API call:
             "weight_unit" => "KG"
         )
     )
-); 
+);
 $response = $client->createShipment($data);
 echo $response . "\n";
 ```
@@ -287,7 +285,6 @@ echo $response . "\n";
        "label": "https://aymakan.com.sa/shipping/pdf/label/key/b16acf19-567b-46b1",
        "pdf_label": "https://aymakan.com.sa/shipping/pdf/label/key/b16acf19-567b-46b1",
        ...
-       ...
      }
    }
  }
@@ -300,9 +297,9 @@ Below is an example on how to make the Cancel Shipment  API call:
 
 #### Mandatory Parameters
 
-| Parameter    | variable name | Mandatory                
+| Parameter    | variable name | Mandatory
 |--------------|---------------|----------------
-| Tracking Code  | `trackingcode` | Yes  
+| Tracking Code  | `trackingcode` | Yes
 
 
 ```php
@@ -322,7 +319,7 @@ echo $response . "\n";
 ```
 
 
-#### Shipping AWB label Printing 
+#### Shipping AWB label Printing
 
 
 Below is an example on how to make the Shipping AWB label Printing  API call:
@@ -330,9 +327,9 @@ Below is an example on how to make the Shipping AWB label Printing  API call:
 
 #### Mandatory Parameters
 
-| Parameter    | variable name | Mandatory                
+| Parameter    | variable name | Mandatory
 |--------------|---------------|----------------
-| Tracking Code  | `tracking_number` | Yes  
+| Tracking Code  | `tracking_number` | Yes
 
 
 ```php
@@ -353,7 +350,7 @@ echo $response . "\n";
 
 
 
-#### Shipping AWB label Printing 
+#### Shipping AWB label Printing
 
 
 Below is an example on how to make the Bulk Shipping AWB label Printing  API call:
@@ -361,9 +358,9 @@ Below is an example on how to make the Bulk Shipping AWB label Printing  API cal
 
 #### Mandatory Parameters
 
-| Parameter    | variable name | Mandatory                
+| Parameter    | variable name | Mandatory
 |--------------|---------------|----------------
-| Tracking Code  | `tracking_codes` | Yes  
+| Tracking Code  | `tracking_codes` | Yes
 
 
 ```php
@@ -383,7 +380,7 @@ echo $response . "\n";
 ```
 
 
-#### Customer Shipping 
+#### Customer Shipping
 
 
 Below is an example on how to make the Customer Shipping  API call:
@@ -427,7 +424,7 @@ echo $response . "\n";
     "per_page": 100,
     "prev_page_url": null,
     "to": 100,
-    "total": 10000 
+    "total": 10000
 }
 ```
 
@@ -463,16 +460,16 @@ echo $response . "\n";
 ```
 
 
-#### Add Webhook  
+#### Add Webhook
 
 Below is an example on how to make the Add Webhook  API call:
 
 
 #### Mandatory Parameters
 
-| Parameter    | variable name | Mandatory                
+| Parameter    | variable name | Mandatory
 |--------------|---------------|----------------
-| Web Hook URL  | `webhook_url` | Yes  
+| Web Hook URL  | `webhook_url` | Yes
 
 ```php
 
@@ -498,16 +495,16 @@ echo $response . "\n";
 
 
 
-#### Update Webhook  
+#### Update Webhook
 
 Below is an example on how to make the Update Webhook API call:
 
 #### Mandatory Parameters
 
-| Parameter    | variable name | Mandatory                
+| Parameter    | variable name | Mandatory
 |--------------|---------------|----------------
-| Web Hook URL  | `webhook_url` | Yes  
-| ID  | `id` | Yes  
+| Web Hook URL  | `webhook_url` | Yes
+| ID  | `id` | Yes
 
 
 ```php
