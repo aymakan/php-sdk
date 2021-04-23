@@ -14,7 +14,7 @@ Support for PHP 7.0  is being deprecated. The SDK will work in these older envir
 
 ## Installing using Composer
 ```
-composer require aymakan/aymakan-sdk-php
+composer require aymakan/aymakan-sdk-php:dev-master
 ```
 
 ## Directory Tree
@@ -46,6 +46,31 @@ composer require aymakan/aymakan-sdk-php
 Your Aymakan access token are available in your  account
 
 Setting configuration while instantiating the Client object
+
+Used for composer based installation
+
+```php
+<?php
+// 1. Autoload the SDK Package. This will include all the files and classes to your autoloader'
+// Used for composer based installation
+
+require __DIR__  . '/vendor/autoload.php';
+
+// Instantiate the client class
+$client = new \Aymakan\Client( );
+
+// set URL
+$client->setUrl('https://aymakan.com.sa/api/');
+// set token
+$client->setToken('12256664555');
+// set environment
+$client->setEnv('Production');
+
+```
+
+Used for Rediect Download Zip
+
+
 ```php
 <?php
 namespace aymakan;
@@ -65,7 +90,7 @@ $client->setEnv('Production');
 ```
 ### Testing in Development Mode
 
-The sandbox parameter is defaulted to false if not specified:
+The Enivorment parameter is defaulted to Development if not specified:
 ```php
 <?php
 namespace aymakan;
