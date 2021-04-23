@@ -4,20 +4,10 @@ namespace Aymakan;
 class Client {
 
     private $config = array(
-        'url'      => null,
+        'url'      => 'https://aymakan.com.sa/api/',
         'token'   => null,
-        'env'   => null,
+        'testing'   => false,
     );
-
-    /**
-     * This method will set url
-     * @access public
-     * @param    $url
-     */
-    public  function setUrl($url)
-    {
-        $this->config ['url'] = $url;
-    }
 
     /**
      * This method will fetch url
@@ -47,22 +37,30 @@ class Client {
     }
 
     /**
-     * This method will set environment
+     * This method will set sandbox
      * @access public
      * @param    $env
      */
-    public function setEnv($env)
+    public function setSandbox($bool)
     {
-        $this->config['env'] = $env;
+        $this->config['testing'] = $bool;
+        if ($bool) 
+        {
+         $this->config['url'] = 'https://dev.aymakan.com.sa/api';    
+           }
+           else
+           {
+       $this->config['url'] = 'https://aymakan.com.sa/api';    
+           }
     }
 
     /**
      * This method will fetch environment
      * @access public
      */
-    public function getEnv()
+    public function getSandbox()
     {
-        return  $this->config['env'];
+        return  $this->config['testing'];
     }
 
     /**

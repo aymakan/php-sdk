@@ -16,12 +16,10 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setUrl('http://127.0.0.1:8000/api');
-            $this->assertEquals('http://127.0.0.1:8000/api', $client->getUrl());
             $client->setToken('test_access_key');
             $this->assertEquals('test_access_key', $client->getToken());
-            $client->setEnv('Development');
-            $this->assertEquals('Development', $client->getEnv());
+            $client->setSandbox(true);
+            $this->assertEquals(false, $client->getSandbox());
         } catch (\Exception $expected) {
             $this->assertRegExp('/client object does not created/i', strval($expected));
         }
@@ -35,9 +33,8 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setUrl('http://127.0.0.1:8000/api');
             $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
-            $client->setEnv('Development');
+            $client->setSandbox(true);
             $response = $client->getCityList();
             $this->assertTrue((bool)$response);
             $this->assertContains('data', $response);
@@ -54,9 +51,8 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setUrl('http://127.0.0.1:8000/api');
             $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
-            $client->setEnv('Development');
+            $client->setSandbox(true);
             $trackingcode = 'AY120266';
             $response = $client->trackShipment($trackingcode);
             $this->assertTrue((bool)$response);
@@ -74,9 +70,8 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setUrl('http://127.0.0.1:8000/api');
             $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
-            $client->setEnv('Development');;
+            $client->setSandbox(true);
             $referencecode='user_60744b72691b8';
             $response = $client->shipmentByReference($referencecode);
             $this->assertTrue((bool) $response);
@@ -95,9 +90,8 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setUrl('http://127.0.0.1:8000/api');
             $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
-            $client->setEnv('Development');
+            $client->setSandbox(true);
             $trackingcode = "AY131915";
             $response = $client->getShipmentLabel($trackingcode);
             $this->assertTrue((bool)$response);
@@ -115,9 +109,8 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setUrl('http://127.0.0.1:8000/api');
             $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
-            $client->setEnv('Development');
+            $client->setSandbox(true);
             $data = 'AY120266,BY9437';
             $response = $client->getBulkShipmentLabel($data);
             $this->assertTrue((bool)$response);
@@ -135,9 +128,8 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setUrl('http://127.0.0.1:8000/api');
             $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
-            $client->setEnv('Development');
+            $client->setSandbox(true);
             $response = $client->getCustomerShipments();
             $this->assertTrue((bool)$response);
             $this->assertContains('data', $response);
@@ -154,9 +146,8 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setUrl('http://127.0.0.1:8000/api');
             $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
-            $client->setEnv('Development');
+            $client->setSandbox(true);
             $response = $client->getWebHook();
             $this->assertTrue((bool)$response);
             $this->assertContains('data', $response);
@@ -173,9 +164,8 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setUrl('http://127.0.0.1:8000/api');
             $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
-            $client->setEnv('Development');
+            $client->setSandbox(true);
             $data = array("webhook_url" => "https://testings.com");
             $response = $client->createWebHook($data);
             $this->assertTrue((bool)$response);
@@ -193,9 +183,8 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setUrl('http://127.0.0.1:8000/api');
             $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
-            $client->setEnv('Development');
+            $client->setSandbox(true);
             $data = array("webhook_url" => "https://www.testings.com",
                 "id" => "205");
             $response = $client->updateWebHook($data);
@@ -214,9 +203,8 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setUrl('http://127.0.0.1:8000/api');
             $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
-            $client->setEnv('Development');
+            $client->setSandbox(true);
             $data = array(
                 "requested_by" => "Test By Aymkana",
                 "delivery_name" => "test",
@@ -278,9 +266,8 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setUrl('http://127.0.0.1:8000/api');
             $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
-            $client->setEnv('Development');
+            $client->setSandbox(true);
             $data =  array("trackingcode" =>"AY120266");
             $response = $client->cancelShipment($data);
             $this->assertTrue((bool)$response);

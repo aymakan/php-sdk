@@ -36,9 +36,9 @@ composer require aymakan/aymakan-sdk-php:dev-master
 #### Mandatory Parameters
 | Parameter    | variable name | Values          				|
 |--------------|---------------|--------------------------------|
-| URL          | `url`         | Default : `null`				|
+| URL          | `url`         | Default : `https://aymakan.com.sa/api/`				|
 | Access Token | `token`       | Default : `null`				|
-| Environment  | `env`         | Default : `null`				|
+| SandBox      | `testing`     | Default : `false`			|
 
 
 ## Setting Configuration
@@ -59,12 +59,10 @@ require __DIR__  . '/vendor/autoload.php';
 // Instantiate the client class
 $client = new \Aymakan\Client( );
 
-// set URL
-$client->setUrl('https://aymakan.com.sa/api/');
 // set token
 $client->setToken('12256664555');
-// set environment
-$client->setEnv('Production');
+// set Sandbox testing mode
+$client->setSandbox(true);
 
 ```
 
@@ -80,17 +78,14 @@ require_once 'Client.php';
 // Instantiate the client class
 $client = new Client( );
 
-// set URL
-$client->setUrl('https://aymakan.com.sa/api/');
 // set token
 $client->setToken('12256664555');
-// set environment
-$client->setEnv('Production');
+
 
 ```
 ### Testing in Development Mode
 
-The Enivorment parameter is defaulted to Development if not specified:
+The Testing mode  is defaulted to false if not specified:
 ```php
 <?php
 namespace aymakan;
@@ -99,13 +94,10 @@ require_once 'Client.php';
 
 // Instantiate the client class
 $client = new Client( );
-
-// set URL
-$client->setUrl('https://dev.aymakan.com.sa/api/');
 // set token
 $client->setToken('12256664555');
-// set environment
-$client->setEnv('Development');
+// enable testing mode
+$client->setSandbox(true);
 ```
 
 ### Making an API Call
