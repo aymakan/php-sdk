@@ -11,6 +11,12 @@ Aymakan API Integration
 
 Support for PHP 7.0  is being deprecated. The SDK will work in these older environments, but future versions may not. We encourage merchants to move to a newer version of PHP at their earliest convenience.
 
+
+## Installing using Composer
+```
+composer require aymakan/aymakan-sdk-php
+```
+
 ## Directory Tree
 ```
 .
