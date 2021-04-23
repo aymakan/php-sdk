@@ -68,7 +68,7 @@ $client->setEnv('Production');
 
 ```
 
-Used for Rediect Download Zip
+Used for Direct Download Zip
 
 
 ```php
