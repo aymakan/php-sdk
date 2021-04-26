@@ -46,7 +46,7 @@ class Client {
         $this->config['testing'] = $bool;
         if ($bool)
         {
-            $this->config['url'] = 'https://dev.aymakan.com.sa/api';
+            $this->config['url'] = 'https://dev-api.aymakan.com.sa/api';
         }
         else
         {
