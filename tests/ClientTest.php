@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace Aymakan;
 
 use PHPUnit\Framework\TestCase;
-require_once 'Aymakan/Client.php';
+require_once 'src/Client.php';
 
 final class ClientTest extends TestCase
 {

@@ -1,8 +1,8 @@
 {
-   "name": "aymakan/aymakan-sdk-php",
+   "name": "aymakan/php-sdk",
    "type": "library",
-   "description": "Aymakan SDK (PHP)",
-   "version": "1.0.0",
+   "description": "Aymakan PHP SDK",
+   "version": "1.0.1",
    "keywords": [
       "aymakan"
    ],
@@ -10,13 +10,13 @@
    "license": "Apache-2.0",
    "authors": [
       {
-         "name": "Mr Altaf",
-         "email": "altaf@aymakan.com.sa"
+         "name": "Aymakan",
+         "email": "it@aymakan.com.sa"
       }
    ],
    "autoload": {
       "psr-4": {
-         "Aymakan\\": "Aymakan/"
+         "Aymakan\\": "src/"
       }
    },
    "require": {
