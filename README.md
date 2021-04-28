@@ -1,20 +1,27 @@
-# Aymakan SDK (PHP)
-Aymakan API Integration
+# Aymakan PHP SDK
+This is official Aymakan PHP SDK. It can be used to integrate with Aymakan APIs. The following features lists 
+are available in this SDK.
+
+- Fetch Aymakan Cities List
+- Create a Shipment
+- Get paginated list of Shipments
+- Track shipments by tracking numbers
+- Track shipments by reference numbers
+- Print single shipment AWB
+- Print multiple shipments AWBs
+- Cancel Shipment
+- Get Web Hook associated to account
+- Create new web hook if there are no web hooks set at account
+- Update webhook
 
 ## Requirements
-
-* Aymakan  account
-
 
 * PHP 7.1 or higher
 * Curl 7.18 or higher
 
-Support for PHP 7.0  is being deprecated. The SDK will work in these older environments, but future versions may not. We encourage merchants to move to a newer version of PHP at their earliest convenience.
-
-
 ## Installing using Composer
 ```
-composer require aymakan/aymakan-sdk-php:dev-master
+composer require aymakan/aymakan-sdk-php
 ```
 
 ## Directory Tree
