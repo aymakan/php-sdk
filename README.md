@@ -21,7 +21,7 @@ are available in this SDK.
 
 ## Installing using Composer
 ```
-composer require aymakan/aymakan-sdk-php
+composer require aymakan/php-sdk
 ```
 
 ## Directory Tree
@@ -30,9 +30,8 @@ composer require aymakan/aymakan-sdk-php
 ├── composer.json - Configuration for composer
 ├── LICENSE.txt
 ├── NOTICE.txt
-├── Aymakan
+├── src
 │   ├── Client.php - Main class with the API calls
-│   ├── Test.php -  PHP SDK Test Sample
 ├── tests
 │   ├── ClientTest.php - Test Cases for Client API calls
 ├── README.md
