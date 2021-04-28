@@ -1,27 +1,23 @@
 <?php
 namespace Aymakan;
 
-class Client {
+use Exception;
 
-    private $config = array(
+class Client
+{
+
+    /**
+     * @var array
+     */
+    private $config = [
         'url'      => 'https://aymakan.com.sa/api/',
         'token'   => null,
         'testing'   => false,
-    );
+    ];
 
     /**
-     * This method will fetch url
-     * @access public
-     */
-    public function getUrl()
-    {
-        return $this->config ['url'];
-    }
-
-    /**
-     * This method will set token
-     * @access public
-     * @param    $token
+     * Set API Token
+     * @param $token
      */
     public function setToken($token)
     {
@@ -29,301 +25,200 @@ class Client {
     }
 
     /**
-     * This method will fetch token
-     * @access public
+     * Get API Token
+     * @return mixed
      */
-    public function getToken() {
-        return  $this->config ['token'];
-    }
-
-    /**
-     * This method will set sandbox
-     * @access public
-     * @param    $env
-     */
-    public function setSandbox($bool)
+    public function getToken()
     {
-        $this->config['testing'] = $bool;
-        if ($bool)
-        {
-            $this->config['url'] = 'https://dev-api.aymakan.com.sa/api';
-        }
-        else
-        {
-            $this->config['url'] = 'https://aymakan.com.sa/api';
-        }
+        return $this->config ['token'];
     }
 
     /**
-     * This method will fetch environment
-     * @access public
+     * Set Sandbox
+     */
+    public function setSandbox()
+    {
+        $this->config['testing'] = true;
+        $this->config['url'] = 'https://dev-api.aymakan.com.sa/api';
+    }
+
+    /**
+     * Get Sandbox
+     * @return mixed
      */
     public function getSandbox()
     {
         return  $this->config['testing'];
     }
 
-    /**
-     * This method will call API
-     * @access public
-     * @return  response
-     * @param    $method   Request Method
-     * @param    $url      Request URL
-     * @param    $data     Request Parameter
-     */
-    public function callAPI($method, $url, $data)
-    {
 
+    /**
+     * Call Aymakan API
+     * @param $method
+     * @param $url
+     * @param $data
+     * @return bool|string
+     * @throws Exception
+     */
+    private function callAPI($method, $url, $data = false)
+    {
         $curl = curl_init();
-        switch ($method){
+        switch ($method) {
             case "POST":
                 curl_setopt($curl, CURLOPT_POST, 1);
-                if ($data)
+                if ($data) {
                     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                }
                 break;
             case "PUT":
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
-                if ($data)
+                if ($data) {
                     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                }
                 break;
             default:
-                if ($data)
+                if ($data) {
                     $url = sprintf("%s?%s", $url, http_build_query($data));
+                }
         }
         // OPTIONS:
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             'Authorization:'. $this->config['token'],
             'Content-Type: application/json',
+            'Accept: application/json',
         ));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         // EXECUTE:
         $result = curl_exec($curl);
-        if(!$result){die("Connection Failure");}
+        if(! $result) {
+            throw new Exception('Error in calling the API. '.json_encode($result));
+        }
         curl_close($curl);
-        return $result;
+        return json_decode($result, true);
     }
 
     /**
-     * This method will fetch city list
-     * @access public
+     * Get Aymakan cities list
+     * @return array
+     * @throws Exception
      */
-    public function getCityList()
+    public function getCityList() : array
     {
-        $get_data = $this->callAPI('GET', $this->config['url'].'/cities', false);
-        $response = json_decode($get_data, true);
-        if(isset($response['error']))
-        {
-            $cities = json_encode($response['message']);
-        }
-        if(isset($response['data']))
-        {
-            $cities = json_encode($response);
-        }
-        return $cities;
+        return $this->callAPI('GET', $this->config['url'].'/cities');
     }
 
     /**
-     * This method will track shipment
-     * @access public
-     * @return  response
-     * @param    $id   Tracking code
+     * Track shipment by tracking number
+     * @param array $tracking
+     * @return bool|string
+     * @throws Exception
      */
-    public function trackShipment($id)
+    public function trackShipment(array $tracking)
     {
-        $get_data = $this->callAPI('GET', $this->config['url'].'/shipping/track?trackingids='.$id, false);
-        $response = json_decode($get_data, true);
-        if(isset($response['error']))
-        {
-            $shipment = json_encode($response['message']);
-        }
-        if(isset($response['data']))
-        {
-            $shipment = json_encode($response);
-        }
-        return $shipment;
+        $tracking = implode(',', $tracking);
+        return $this->callAPI('GET', $this->config['url'].'/shipping/track?trackingids='.$tracking);
     }
 
     /**
-     * This method will track shipment by reference
-     * @access public
-     * @return  response
-     * @param    $id   Reference
+     * Get shipment by reference
+     * @param array $references
+     * @return bool|string
+     * @throws Exception
      */
-    public function shipmentByReference($id)
+    public function shipmentByReference(array $references)
     {
-        $get_data = $this->callAPI('GET', $this->config['url'].'/shipping/by_reference?referencecodes='.$id, false);
-        $response = json_decode($get_data, true);
-        if(isset($response['error']))
-        {
-            $shipment = json_encode($response['message']);
-        }
-        if(isset($response['data']))
-        {
-            $shipment = json_encode($response);
-        }
-        return $shipment;
+        $references = implode(',', $references);
+        return $this->callAPI('GET', $this->config['url'].'/shipping/by_reference?referencecodes='.$references);
     }
 
     /**
-     * This method will fetch shipment label
-     * @access public
-     * @return  response
-     * @param    $id   Tracking code
+     * Get shipment label
+     * @param $tracking
+     * @return mixed
+     * @throws Exception
      */
-    public function getShipmentLabel($id)
+    public function getShipmentLabel($tracking)
     {
-        $get_data = $this->callAPI('GET', $this->config['url'].'/shipping/awb/tracking?tracking_number='.$id, false);
-        $response = json_decode($get_data, true);
-        if(isset($response['error']))
-        {
-            $label = json_encode($response['message']);
-        }
-        if(isset($response['data']))
-        {
-            $label = json_encode($response);
-        }
-        return $label;
+        $label = $this->callAPI('GET', $this->config['url'].'/shipping/awb/tracking?tracking_number='.$tracking);
+        return json_decode($label, true);
     }
 
     /**
-     * This method will fetch bulk shipment label
-     * @access public
-     * @return  response
-     * @param    $id   Tracking code
+     * Get multiple shipments label
+     * @param $tracking
+     * @return mixed
+     * @throws Exception
      */
-    public function getBulkShipmentLabel($id)
+    public function getBulkShipmentLabel(array $tracking)
     {
-        $get_data = $this->callAPI('GET', $this->config['url'].'/shipping/bulk_awb/trackings?tracking_codes='.$id, false);
-        $response = json_decode($get_data, true);
-        if(isset($response['error']))
-        {
-            $label = json_encode($response['message']);
-        }
-        if(isset($response['data']))
-        {
-            $label = json_encode($response);
-        }
-        return $label;
+        $tracking = implode(',', $tracking);
+        return $this->callAPI('GET', $this->config['url'].'/shipping/bulk_awb/trackings?tracking_codes='.$tracking);
     }
 
     /**
      * This method will fetch customer shipments
      * @access public
-     * @return  response
+     * @return mixed
+     * @throws Exception
      */
     public function getCustomerShipments()
     {
-        $get_data = $this->callAPI('GET', $this->config['url'].'/customer/shipments', false);
-        $response = json_decode($get_data, true);
-        if(isset($response['error']))
-        {
-            $label = json_encode($response['message']);
-        }
-        if(isset($response['data']))
-        {
-            $label = json_encode($response);
-        }
-        return $label;
+        return $this->callAPI('GET', $this->config['url'].'/customer/shipments');
     }
 
     /**
-     * This method will create shipment
-     * @access public
+     * Creates a shipment
+     * @param $data
+     * @return mixed
+     * @throws Exception
      */
     public function createShipment($data)
     {
-        $get_data = $this->callAPI('POST', $this->config['url'].'/shipping/create', json_encode($data));
-        $response = json_decode($get_data, true);
-        if(isset($response['error']))
-        {
-            $label = json_encode($response['errors']);
-        }
-        if(isset($response['success']))
-        {
-            $label = json_encode($response);
-        }
-        return $label;
+        return $this->callAPI('POST', $this->config['url'].'/shipping/create', json_encode($data));
     }
 
     /**
-     * This method will cancel shipment
-     * @access public
-     * @return  response
-     * @param    $data   parameter array
+     * Cancel a shipment
+     * @param $data
+     * @return mixed
+     * @throws Exception
      */
     public function cancelShipment($data)
     {
-        $get_data = $this->callAPI('POST', $this->config['url'].'/shipping/cancel', json_encode($data));
-        $response = json_decode($get_data, true);
-        if(isset($response['error']))
-        {
-            $label = json_encode($response['message']);
-        }
-        if(isset($response['success']))
-        {
-            $label = json_encode($response);
-        }
-        return $label;
+        return $this->callAPI('POST', $this->config['url'].'/shipping/cancel', json_encode($data));
     }
 
     /**
-     * This method will fetch web hook
-     * @access public
+     * Get user account webhooks list
+     * @return mixed
+     * @throws Exception
      */
     public function getWebHook()
     {
-        $get_data = $this->callAPI('GET', $this->config['url'].'/webhooks/list', false);
-        $response = json_decode($get_data, true);
-        if(isset($response['error']))
-        {
-            $label = json_encode($response['errors']);
-        }
-        if(isset($response['success']))
-        {
-            $label = json_encode($response);
-        }
-        return $label;
+        return $this->callAPI('GET', $this->config['url'].'/webhooks/list');
     }
 
     /**
-     * This method will create web hook
-     * @access public
+     * Create a webhook
+     * @param $data
+     * @return mixed
+     * @throws Exception
      */
     public function createWebHook($data)
     {
-        $get_data = $this->callAPI('POST', $this->config['url'].'/webhooks/create', json_encode($data));
-        $response = json_decode($get_data, true);
-        if(isset($response['error']))
-        {
-            $label = json_encode($response['errors']);
-        }
-        if(isset($response['success']))
-        {
-            $label = json_encode($response);
-        }
-        return $label;
+        return $this->callAPI('POST', $this->config['url'].'/webhooks/create', json_encode($data));
     }
 
     /**
-     * This method will update web hook
-     * @access public
+     * Updates a webhook
+     * @param $data
+     * @return mixed
+     * @throws Exception
      */
     public function updateWebHook($data)
     {
-        $get_data = $this->callAPI('PUT', $this->config['url'].'/webhooks/update', json_encode($data));
-        $response = json_decode($get_data, true);
-        if(isset($response['error']))
-        {
-            $label = json_encode($response['message']);
-        }
-        if(isset($response['success']))
-        {
-            $label = json_encode($response);
-        }
-        return $label;
+        return $this->callAPI('PUT', $this->config['url'].'/webhooks/update', json_encode($data));
     }
-
 }
-?>
