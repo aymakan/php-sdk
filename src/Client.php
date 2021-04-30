@@ -83,13 +83,15 @@ class Client
         }
         // OPTIONS:
         curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 100);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             'Authorization:'. $this->config['token'],
             'Content-Type: application/json',
             'Accept: application/json',
         ));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         // EXECUTE:
         $result = curl_exec($curl);
         if(! $result) {
@@ -141,8 +143,7 @@ class Client
      */
     public function getShipmentLabel($tracking)
     {
-        $label = $this->callAPI('GET', $this->config['url'].'/shipping/awb/tracking?tracking_number='.$tracking);
-        return json_decode($label, true);
+        return $this->callAPI('GET', $this->config['url'].'/shipping/awb/tracking?tracking_number='.$tracking);
     }
 
     /**
@@ -220,5 +221,49 @@ class Client
     public function updateWebHook($data)
     {
         return $this->callAPI('PUT', $this->config['url'].'/webhooks/update', json_encode($data));
+    }
+
+
+    /**
+     * Get user account address list
+     * @return mixed
+     * @throws Exception
+     */
+    public function getAddress()
+    {
+        return $this->callAPI('GET', $this->config['url'].'/address/list');
+    }
+
+    /**
+     * Create  address
+     * @param $data
+     * @return mixed
+     * @throws Exception
+     */
+    public function createAddress($data)
+    {
+        return $this->callAPI('POST', $this->config['url'].'/address/create', json_encode($data));
+    }
+
+    /**
+     * Update  address
+     * @param $data
+     * @return mixed
+     * @throws Exception
+     */
+    public function updateAddress($data)
+    {
+        return $this->callAPI('PUT', $this->config['url'].'/address/update', json_encode($data));
+    }
+
+    /**
+     * Delete  address
+     * @param $id
+     * @return mixed
+     * @throws Exception
+     */
+    public function deleteAddress($id)
+    {
+        return $this->callAPI('DELETE', $this->config['url'].'/address/delete?id='.$id, false);
     }
 }
