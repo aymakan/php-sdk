@@ -16,10 +16,10 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('test_access_key');
+            $client->setApikey('test_access_key');
             $this->assertEquals('test_access_key', $client->getToken());
             $client->setSandbox(true);
-            $this->assertEquals(false, $client->getSandbox());
+            $this->assertEquals(true, $client->isSandbox());
         } catch (\Exception $expected) {
             $this->assertRegExp('/client object does not created/i', strval($expected));
         }
@@ -36,9 +36,9 @@ final class ClientTest extends TestCase
             $client->setSandbox();
             $response = $client->getCityList();
             $this->assertTrue((bool)$response);
-            $this->assertContains('data', $response);
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/cities api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
         }
     }
 
@@ -50,14 +50,14 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
+            $client->setApikey('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
             $client->setSandbox();
-            $data = array('trackingcode' => 'AY120266' );
+            $data = array('143862','143892');
             $response = $client->trackShipment($data);
             $this->assertTrue((bool)$response);
-            $this->assertContains('data', $response) ;
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/track shipment api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
         }
     }
 
@@ -69,14 +69,14 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
+            $client->setApikey('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
             $client->setSandbox();
-            $data = array('trackingcode' => 'AY120266' );
+            $data = array('test-123shiiii3');
             $response = $client->shipmentByReference($data);
             $this->assertTrue((bool) $response);
-            $this->assertContains('data', $response);
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/reference by shipment api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
         }
     }
 
@@ -89,14 +89,14 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
+            $client->setApikey('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
             $client->setSandbox();
-            $trackingcode = "AY131915";
+            $trackingcode = '143866' ;
             $response = $client->getShipmentLabel($trackingcode);
             $this->assertTrue((bool)$response);
-            $this->assertContains('data', $response);
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/shipment label api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
         }
     }
 
@@ -108,14 +108,14 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
+            $client->setApikey('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
             $client->setSandbox();
-            $data = array('code' => 'AY120266,BY9437' );
+            $data = array('AY120266','BY9437');
             $response = $client->getBulkShipmentLabel($data);
             $this->assertTrue((bool)$response);
-            $this->assertContains('data', $response);
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/bulk shipment label api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
         }
     }
 
@@ -127,13 +127,13 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
+            $client->setApikey('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
             $client->setSandbox();
             $response = $client->getCustomerShipments();
             $this->assertTrue((bool)$response);
-            $this->assertContains('data', $response);
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/customer shipment api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
         }
     }
 
@@ -145,13 +145,14 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
+            $client->setApikey('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
             $client->setSandbox();
             $response = $client->getWebHook();
+            var_dump($response);
             $this->assertTrue((bool)$response);
-            $this->assertContains('data', $response);
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/get web hook api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
         }
     }
 
@@ -163,14 +164,14 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
+            $client->setApikey('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
             $client->setSandbox();
             $data = array("webhook_url" => "https://testings.com");
             $response = $client->createWebHook($data);
             $this->assertTrue((bool)$response);
-            $this->assertContains('webhook', $response);
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/add web hook api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
         }
     }
 
@@ -182,15 +183,17 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
+            $client->setApikey('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
             $client->setSandbox();
-            $data = array("webhook_url" => "https://www.testings.com",
-                "id" => "205");
+            $data = array(
+                "webhook_url" => "https://www.testings.com",
+                "id" => "219"
+            );
             $response = $client->updateWebHook($data);
             $this->assertTrue((bool)$response);
-            $this->assertContains('data', $response);
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/update web hook api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
         }
     }
 
@@ -202,13 +205,13 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
+            $client->setApikey('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
             $client->setSandbox();
             $response = $client->getAddress();
             $this->assertTrue((bool)$response);
-            $this->assertContains('data', $response);
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/get web hook api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
         }
     }
 
@@ -220,7 +223,7 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
+            $client->setApikey('10c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
             $client->setSandbox();
             $data = array(
                 "title" => "Aymkana",
@@ -234,10 +237,11 @@ final class ClientTest extends TestCase
                 "description" => "Home address"
             );
             $response = $client->createAddress($data);
+            var_dump($response);
             $this->assertTrue((bool)$response);
-            $this->assertContains('webhook', $response);
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/add web hook api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
         }
     }
 
@@ -249,10 +253,10 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
+            $client->setApikey('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
             $client->setSandbox();
             $data = array(
-                "id" => "3",
+                "id" => "560",
                 "title" => "Aymkana",
                 "name" => "test",
                 "email" => "test@test.com",
@@ -263,11 +267,12 @@ final class ClientTest extends TestCase
                 "phone" => "+966598998110",
                 "description" => "Home address"
             );
-            $response = $client->updateWebHook($data);
+            $response = $client->updateAddress($data);
             $this->assertTrue((bool)$response);
-            $this->assertContains('data', $response);
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/update web hook api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
+
         }
     }
 
@@ -279,13 +284,15 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
+            $client->setApikey('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
             $client->setSandbox();
-            $id = 3 ;
-            $response = $client->deleteAddress($id);
+            $data = array('id' => 560);
+            $response = $client->deleteAddress($data);
             $this->assertTrue((bool)$response);
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/update web hook api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
+
         }
     }
 
@@ -297,7 +304,7 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
+            $client->setApikey('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
             $client->setSandbox();
             $data = array(
                 "requested_by" => "Test By Aymkana",
@@ -315,7 +322,7 @@ final class ClientTest extends TestCase
                 "pieces" => 1,
                 "cod_amount" => 200,
                 "declared_value" => 123,
-                "reference" => "test-123shi",
+                "reference" => "test-123shiiii3",
                 "channel" => "magento",
                 "destination" => array(
                     "warehouse_id" => 3,
@@ -345,10 +352,11 @@ final class ClientTest extends TestCase
                 )
             );
             $response = $client->createShipment($data);
+            var_dump($response);
             $this->assertTrue((bool)$response);
-            $this->assertContains('reference', $response);
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/create shipment api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
         }
     }
 
@@ -360,14 +368,14 @@ final class ClientTest extends TestCase
     {
         try {
             $client = new Client();
-            $client->setToken('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
+            $client->setApikey('0c2b7458eaac670745bf1de00217c7c9-d008a330-5577-44df-a34b-b355c20cd5d8-d7ec25c503e66072837412ebf4b2ee86/5ec606d031e7ad7d18f772f51cf328d5/ba373c49-3c14-47e5-9460-78a418bc5034');
             $client->setSandbox();
-            $data =  array("trackingcode" =>"AY120266");
+            $data =  array("tracking" =>'AY358107280');
             $response = $client->cancelShipment($data);
             $this->assertTrue((bool)$response);
-            $this->assertContains('shipping', $response);
+            $this->assertArrayHasKey('success', $response);
         } catch (\Exception $expected) {
-            $this->assertRegExp('/cancel shipment api does not call/i', strval($expected));
+            $this->fail("The Error is : ". $response['message']);
         }
     }
 }

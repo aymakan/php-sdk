@@ -1,4 +1,5 @@
 <?php
+
 namespace Aymakan;
 
 use Exception;
@@ -6,22 +7,18 @@ use Exception;
 class Client
 {
 
-    /**
-     * @var array
-     */
-    private $config = [
-        'url'      => 'https://aymakan.com.sa/api/',
-        'token'   => null,
-        'testing'   => false,
-    ];
+    private string $url = 'https://dev-api.aymakan.com.sa';
+    private string $api_key = "";
+    private bool $testing = false;
+
 
     /**
      * Set API Token
-     * @param $token
+     * @param String $token
      */
-    public function setToken($token)
+    public function setApikey(string $token)
     {
-        $this->config ['token'] = $token;
+        $this->api_key = $token;
     }
 
     /**
@@ -30,7 +27,7 @@ class Client
      */
     public function getToken()
     {
-        return $this->config ['token'];
+        return $this->api_key;
     }
 
     /**
@@ -38,17 +35,17 @@ class Client
      */
     public function setSandbox()
     {
-        $this->config['testing'] = true;
-        $this->config['url'] = 'https://dev-api.aymakan.com.sa/api';
+        $this->testing = true;
+        $this->url = 'https://dev-api.aymakan.com.sa/api';
     }
 
     /**
      * Get Sandbox
      * @return mixed
      */
-    public function getSandbox()
+    public function isSandbox()
     {
-        return  $this->config['testing'];
+        return $this->testing;
     }
 
 
@@ -60,26 +57,24 @@ class Client
      * @return bool|string
      * @throws Exception
      */
-    private function callAPI($method, $url, $data = false)
+    private function callAPI($method, $url = null, $data = false)
     {
+
         $curl = curl_init();
         switch ($method) {
             case "POST":
                 curl_setopt($curl, CURLOPT_POST, 1);
-                if ($data) {
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-                }
                 break;
             case "PUT":
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
-                if ($data) {
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-                }
                 break;
-            default:
-                if ($data) {
-                    $url = sprintf("%s?%s", $url, http_build_query($data));
-                }
+            case "DELETE":
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+                break;
+
+        }
+        if ($data) {
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
         }
         // OPTIONS:
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -88,14 +83,14 @@ class Client
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 100);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Authorization:'. $this->config['token'],
+            'Authorization:' . $this->api_key,
             'Content-Type: application/json',
             'Accept: application/json',
         ));
         // EXECUTE:
         $result = curl_exec($curl);
-        if(! $result) {
-            throw new Exception('Error in calling the API. '.json_encode($result));
+        if (!$result) {
+            throw new Exception('Error in calling the API. ' . json_encode($result));
         }
         curl_close($curl);
         return json_decode($result, true);
@@ -106,21 +101,22 @@ class Client
      * @return array
      * @throws Exception
      */
-    public function getCityList() : array
+    public function getCityList(): array
     {
-        return $this->callAPI('GET', $this->config['url'].'/cities');
+        return $this->callAPI('GET', $this->url . '/cities');
     }
 
     /**
      * Track shipment by tracking number
-     * @param array $tracking
+     * @param string $tracking
      * @return bool|string
      * @throws Exception
      */
     public function trackShipment(array $tracking)
     {
+
         $tracking = implode(',', $tracking);
-        return $this->callAPI('GET', $this->config['url'].'/shipping/track?trackingids='.$tracking);
+        return $this->callAPI('GET', $this->url . '/shipping/track/' . $tracking);
     }
 
     /**
@@ -132,7 +128,7 @@ class Client
     public function shipmentByReference(array $references)
     {
         $references = implode(',', $references);
-        return $this->callAPI('GET', $this->config['url'].'/shipping/by_reference?referencecodes='.$references);
+        return $this->callAPI('GET', $this->url . '/shipping/by_reference/' . $references);
     }
 
     /**
@@ -143,7 +139,7 @@ class Client
      */
     public function getShipmentLabel($tracking)
     {
-        return $this->callAPI('GET', $this->config['url'].'/shipping/awb/tracking?tracking_number='.$tracking);
+        return $this->callAPI('GET', $this->url . '/shipping/awb/tracking/' . $tracking);
     }
 
     /**
@@ -155,7 +151,7 @@ class Client
     public function getBulkShipmentLabel(array $tracking)
     {
         $tracking = implode(',', $tracking);
-        return $this->callAPI('GET', $this->config['url'].'/shipping/bulk_awb/trackings?tracking_codes='.$tracking);
+        return $this->callAPI('GET', $this->url . '/shipping/bulk_awb/trackings/' . $tracking);
     }
 
     /**
@@ -166,7 +162,7 @@ class Client
      */
     public function getCustomerShipments()
     {
-        return $this->callAPI('GET', $this->config['url'].'/customer/shipments');
+        return $this->callAPI('GET', $this->url . '/customer/shipments');
     }
 
     /**
@@ -177,7 +173,7 @@ class Client
      */
     public function createShipment($data)
     {
-        return $this->callAPI('POST', $this->config['url'].'/shipping/create', json_encode($data));
+        return $this->callAPI('POST', $this->url . '/shipping/create', $data);
     }
 
     /**
@@ -188,7 +184,7 @@ class Client
      */
     public function cancelShipment($data)
     {
-        return $this->callAPI('POST', $this->config['url'].'/shipping/cancel', json_encode($data));
+        return $this->callAPI('POST', $this->url . '/shipping/cancel', $data);
     }
 
     /**
@@ -198,7 +194,7 @@ class Client
      */
     public function getWebHook()
     {
-        return $this->callAPI('GET', $this->config['url'].'/webhooks/list');
+        return $this->callAPI('GET', $this->url . '/webhooks/list');
     }
 
     /**
@@ -209,7 +205,7 @@ class Client
      */
     public function createWebHook($data)
     {
-        return $this->callAPI('POST', $this->config['url'].'/webhooks/create', json_encode($data));
+        return $this->callAPI('POST', $this->url . '/webhooks/create', $data);
     }
 
     /**
@@ -220,7 +216,7 @@ class Client
      */
     public function updateWebHook($data)
     {
-        return $this->callAPI('PUT', $this->config['url'].'/webhooks/update', json_encode($data));
+        return $this->callAPI('PUT', $this->url . '/webhooks/update', $data);
     }
 
 
@@ -231,7 +227,7 @@ class Client
      */
     public function getAddress()
     {
-        return $this->callAPI('GET', $this->config['url'].'/address/list');
+        return $this->callAPI('GET', $this->url . '/address/list');
     }
 
     /**
@@ -242,7 +238,7 @@ class Client
      */
     public function createAddress($data)
     {
-        return $this->callAPI('POST', $this->config['url'].'/address/create', json_encode($data));
+        return $this->callAPI('POST', $this->url . '/address/create', $data);
     }
 
     /**
@@ -253,17 +249,17 @@ class Client
      */
     public function updateAddress($data)
     {
-        return $this->callAPI('PUT', $this->config['url'].'/address/update', json_encode($data));
+        return $this->callAPI('PUT', $this->url . '/address/update', $data);
     }
 
     /**
      * Delete  address
-     * @param $id
+     * @param $data
      * @return mixed
      * @throws Exception
      */
-    public function deleteAddress($id)
+    public function deleteAddress($data)
     {
-        return $this->callAPI('DELETE', $this->config['url'].'/address/delete?id='.$id, false);
+        return $this->callAPI('DELETE', $this->url .'/address/delete',$data);
     }
 }
