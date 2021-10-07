@@ -4,6 +4,7 @@ are available in this SDK.For more details about our API requests and responses 
 
 - Fetch Aymakan Cities List
 - Create a Shipment
+- Create a reverse pickup Shipment
 - Get paginated list of Shipments
 - Track shipments by tracking numbers
 - Track shipments by reference numbers
@@ -126,11 +127,23 @@ echo $response . "\n";
 Creates a new shipment , to find out more details about `request parameters` checkout our  
 [Create Shipment API Documentation](https://developer.aymakan.com.sa/docs/1.0/create-shipping)
 ```php
-
- $data = array(
+$data = array(
  //request parameters
 );
+
 $response = $client->createShipment($data);
+echo $response . "\n";
+```
+### Create a Reverse Pickup Shipping
+
+Creates a reverse pickup shipment , to find out more details about `request parameters` checkout our  
+[Create Reverse Pickup Shipment API Documentation](https://developer.aymakan.com.sa/docs/1.0/create-reverse-pickup-shipping)
+```php
+$data = array(
+ //request parameters
+);
+
+$response = $client->createReversePickupShipment($data);
 echo $response . "\n";
 ```
 
