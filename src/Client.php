@@ -177,6 +177,17 @@ class Client
     }
 
     /**
+     * Creates a reverse pickup shipment
+     * @param $data
+     * @return mixed
+     * @throws Exception
+     */
+    public function createReversePickupShipment($data)
+    {
+        return $this->callAPI('POST', $this->url . '/shipping/create/reverse_pickup', $data);
+    }
+
+    /**
      * Cancel a shipment
      * @param $data
      * @return mixed
