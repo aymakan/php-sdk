@@ -273,4 +273,38 @@ class Client
     {
         return $this->callAPI('DELETE', $this->url .'/address/delete',$data);
     }
+
+    /**
+     * Fetch all pickup requests by current user
+     * @param $data
+     * @return mixed
+     * @throws Exception
+     */
+    public function pickupRequest()
+    {
+        return $this->callAPI('GET', $this->url .'pickup_request/list');
+    }
+
+
+    /**
+     * Create a new pickup request
+     * @param $data
+     * @return mixed
+     * @throws Exception
+     */
+    public function createPickupRequest($data)
+    {
+        return $this->callAPI('POST', $this->url .'pickup_request/create',$data);
+    }
+
+    /**
+     * check the available time slots
+     * @param $data
+     * @return mixed
+     * @throws Exception
+     */
+    public function timeSlots($data)
+    {
+        return $this->callAPI('GET', $this->url .'time_slots/'.$data);
+    }
 }
