@@ -282,7 +282,7 @@ class Client
      */
     public function pickupRequest()
     {
-        return $this->callAPI('GET', $this->url .'pickup_request/list');
+        return $this->callAPI('GET', $this->url .'/pickup_request/list');
     }
 
 
@@ -294,7 +294,7 @@ class Client
      */
     public function createPickupRequest($data)
     {
-        return $this->callAPI('POST', $this->url .'pickup_request/create',$data);
+        return $this->callAPI('POST', $this->url .'/pickup_request/create',$data);
     }
 
     /**
@@ -305,6 +305,6 @@ class Client
      */
     public function timeSlots($data)
     {
-        return $this->callAPI('GET', $this->url .'time_slots/'.$data);
+        return $this->callAPI('GET', $this->url .'/time_slots/'.$data);
     }
 }
