@@ -25,7 +25,7 @@ class Client
      * Get API Token
      * @return mixed
      */
-    public function getToken()
+    public function getApikey()
     {
         return $this->api_key;
     }
@@ -36,7 +36,16 @@ class Client
     public function setSandbox()
     {
         $this->testing = true;
-        $this->url = 'https://dev-api.aymakan.com.sa/api';
+        $this->url = 'https://dev-api.aymakan.com.sa/v2';
+    }
+
+    /**
+     * Unset Sandbox
+     */
+    public function unsetSandbox()
+    {
+        $this->testing = false;
+        $this->url = 'https://api.aymakan.net/v2';
     }
 
     /**
@@ -83,9 +92,8 @@ class Client
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 100);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Authorization:' . $this->api_key,
-            'Content-Type: application/json',
             'Accept: application/json',
+            'Authorization:' . $this->api_key
         ));
         // EXECUTE:
         $result = curl_exec($curl);
@@ -96,6 +104,18 @@ class Client
         return json_decode($result, true);
     }
 
+    // General API methods:
+
+    /**
+     * Ping Aymakan API
+     * @return array
+     * @throws Exception
+     */
+    public function pingApi(): array
+    {
+        return $this->callAPI('GET', $this->url . '/ping');
+    }
+
     /**
      * Get Aymakan cities list
      * @return array
@@ -104,6 +124,28 @@ class Client
     public function getCityList(): array
     {
         return $this->callAPI('GET', $this->url . '/cities');
+    }
+
+    /**
+     * Creates a shipment
+     * @param $data
+     * @return mixed
+     * @throws Exception
+     */
+    public function createShipment($data)
+    {
+        return $this->callAPI('POST', $this->url . '/shipping/create', $data);
+    }
+
+    /**
+     * Creates a reverse pickup shipment
+     * @param $data
+     * @return mixed
+     * @throws Exception
+     */
+    public function createReversePickupShipment($data)
+    {
+        return $this->callAPI('POST', $this->url . '/shipping/create/reverse_pickup', $data);
     }
 
     /**
@@ -129,6 +171,28 @@ class Client
     {
         $references = implode(',', $references);
         return $this->callAPI('GET', $this->url . '/shipping/by_reference/' . $references);
+    }
+
+    /**
+     * Cancel a shipment
+     * @param $data
+     * @return mixed
+     * @throws Exception
+     */
+    public function cancelShipment($data)
+    {
+        return $this->callAPI('POST', $this->url . '/shipping/cancel', $data);
+    }
+
+    /**
+     * Cancel shipment by reference
+     * @param array $references
+     * @return bool|string
+     * @throws Exception
+     */
+    public function cancelShipmentByReference(array $reference)
+    {
+        return $this->callAPI('POST', $this->url . '/shipping/cancel_by_reference', $reference);
     }
 
     /**
@@ -165,71 +229,53 @@ class Client
         return $this->callAPI('GET', $this->url . '/customer/shipments');
     }
 
+    // Pickup requests methods:
+
     /**
-     * Creates a shipment
+     * Fetch all pickup requests by current user
      * @param $data
      * @return mixed
      * @throws Exception
      */
-    public function createShipment($data)
+    public function pickupRequest()
     {
-        return $this->callAPI('POST', $this->url . '/shipping/create', $data);
+        return $this->callAPI('GET', $this->url .'/pickup_request/list');
     }
 
     /**
-     * Creates a reverse pickup shipment
+     * Create a new pickup request
      * @param $data
      * @return mixed
      * @throws Exception
      */
-    public function createReversePickupShipment($data)
+    public function createPickupRequest($data)
     {
-        return $this->callAPI('POST', $this->url . '/shipping/create/reverse_pickup', $data);
+        return $this->callAPI('POST', $this->url .'/pickup_request/create',$data);
     }
 
     /**
-     * Cancel a shipment
+     * Cancel a pickup request
      * @param $data
      * @return mixed
      * @throws Exception
      */
-    public function cancelShipment($data)
+    public function cancelPickupRequest($data)
     {
-        return $this->callAPI('POST', $this->url . '/shipping/cancel', $data);
+        return $this->callAPI('POST', $this->url .'/pickup_request/cancel',$data);
     }
 
     /**
-     * Get user account webhooks list
-     * @return mixed
-     * @throws Exception
-     */
-    public function getWebHook()
-    {
-        return $this->callAPI('GET', $this->url . '/webhooks/list');
-    }
-
-    /**
-     * Create a webhook
+     * check the available time slots
      * @param $data
      * @return mixed
      * @throws Exception
      */
-    public function createWebHook($data)
+    public function timeSlots($data)
     {
-        return $this->callAPI('POST', $this->url . '/webhooks/create', $data);
+        return $this->callAPI('GET', $this->url .'/time_slots/'.$data);
     }
 
-    /**
-     * Updates a webhook
-     * @param $data
-     * @return mixed
-     * @throws Exception
-     */
-    public function updateWebHook($data)
-    {
-        return $this->callAPI('PUT', $this->url . '/webhooks/update', $data);
-    }
-
+    // Customer address methods:
 
     /**
      * Get user account address list
@@ -274,37 +320,49 @@ class Client
         return $this->callAPI('DELETE', $this->url .'/address/delete',$data);
     }
 
+    // WebHook API methods:
+
     /**
-     * Fetch all pickup requests by current user
+     * Get user account webhooks list
+     * @return mixed
+     * @throws Exception
+     */
+    public function getWebHook()
+    {
+        return $this->callAPI('GET', $this->url . '/webhooks/list');
+    }
+
+    /**
+     * Create a webhook
      * @param $data
      * @return mixed
      * @throws Exception
      */
-    public function pickupRequest()
+    public function createWebHook($data)
     {
-        return $this->callAPI('GET', $this->url .'/pickup_request/list');
+        return $this->callAPI('POST', $this->url . '/webhooks/create', $data);
     }
 
-
     /**
-     * Create a new pickup request
+     * Updates a webhook
      * @param $data
      * @return mixed
      * @throws Exception
      */
-    public function createPickupRequest($data)
+    public function updateWebHook($data)
     {
-        return $this->callAPI('POST', $this->url .'/pickup_request/create',$data);
+        return $this->callAPI('PUT', $this->url . '/webhooks/update', $data);
     }
 
     /**
-     * check the available time slots
+     * Deletes a webhook
      * @param $data
      * @return mixed
      * @throws Exception
      */
-    public function timeSlots($data)
+    public function deleteWebHook()
     {
-        return $this->callAPI('GET', $this->url .'/time_slots/'.$data);
+        return $this->callAPI('DELETE', $this->url . '/webhooks/delete');
     }
+
 }
