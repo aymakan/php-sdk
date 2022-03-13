@@ -1,12 +1,13 @@
 # Aymakan PHP SDK
 This is official Aymakan PHP SDK. It can be used to integrate with Aymakan APIs. The following features lists
-are available in this SDK.For more details about our API requests and responses [click here](https://developer.aymakan.com.sa/docs/1.0).
+are available in this SDK.For more details about our API requests and responses [click here](https://developer.aymakan.com.sa/docs/2).
 
 - ### [General Methods](#general-methods-1)
     - [Ping API](#ping-api-method)
     - [Aymakan Cities](#cities-method)
 - ### [Shipping Methods](#shipping-methods-1)
     - [Create shipping](#create-shipping)
+    - [Create bulk shipping](#create-bulk-shipping)
     - [Create reverse pickup Shipping](#create-a-reverse-pickup-shipping)
     - [Track shipping](#track-shipping)
     - [Track shipping by reference](#track-shipping-using-reference)
@@ -74,7 +75,7 @@ $response = $client->pingApi();
 echo $response . "\n";
 ```
 
-[Ping API Details](https://developer.aymakan.com.sa/docs/1.0/ping) <p align="right">(<a href="#top">back to top</a>)</p>
+[Ping API Details](https://developer.aymakan.com.sa/docs/2/ping) <p align="right">(<a href="#top">back to top</a>)</p>
 
 
 ### Cities Method
@@ -86,7 +87,7 @@ $response = $client->getCityList();
 echo $response . "\n";
 ```
 
-[Cities API Details](https://developer.aymakan.com.sa/docs/1.0/cities) <p align="right">(<a href="#top">back to top</a>)</p>
+[Cities API Details](https://developer.aymakan.com.sa/docs/2/cities) <p align="right">(<a href="#top">back to top</a>)</p>
 
 ----
 ## Shipping Methods
@@ -94,7 +95,7 @@ echo $response . "\n";
 ### Create Shipping
 
 Creates a new shipment , to find out more details about `request parameters` checkout our  
-[Create Shipping API Documentation](https://developer.aymakan.com.sa/docs/1.0/create-shipping)
+[Create Shipping API Documentation](https://developer.aymakan.com.sa/docs/2/create-shipping)
 ```php
 $data = array(
  //request parameters
@@ -105,10 +106,39 @@ echo $response . "\n";
 ```
  <p align="right">(<a href="#top">back to top</a>)</p>
 
+
+### Create Bulk Shipping
+
+Below is an example on how to create bulk shipments:
+#### Mandatory Parameter
+
+| Parameter | Type       | Mandatory |
+|----------|------------|----------------|
+| `shipments`       | Array of shipments |  Yes  |
+```php
+$data = array(
+    "shipments" => 
+    array(
+        # data for shipment 1
+    ),
+    array(
+        # data for shipment 2
+    ),
+      ...
+      ...
+)
+
+$response = $client->createBulkShipment($data);
+echo $response . "\n";
+```
+[Create Bulk Shippings API Documentation](https://developer.aymakan.com.sa/docs/2/create-bulk-shippings)
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
 ### Create a Reverse Pickup Shipping
 
 Creates a reverse pickup shipment , to find out more details about `request parameters` checkout our  
-[Create Reverse Pickup Shipping API Documentation](https://developer.aymakan.com.sa/docs/1.0/create-reverse-pickup-shipping)
+[Create Reverse Pickup Shipping API Documentation](https://developer.aymakan.com.sa/docs/2/create-reverse-pickup-shipping)
 ```php
 $data = array(
  //request parameters
@@ -144,7 +174,8 @@ $response = $client->trackShipment(['AY669001659', '143862', '143866']);
 echo $response . "\n";
 ```
 
-[Track Shipping API Details](https://developer.aymakan.com.sa/docs/1.0/track-shipping) <p align="right">(<a href="#top">back to top</a>)</p>
+[Track Shipping API Details](https://developer.aymakan.com.sa/docs/2/track-shipping) 
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Track Shipping Using Reference
 
@@ -169,7 +200,7 @@ $response = $client->shipmentByReference(['200018179','test-200018179']);
 echo $response . "\n";
 ```
 
-[Shipment By Reference API Details](https://developer.aymakan.com.sa/docs/1.0/shipments-by-reference)
+[Shipment By Reference API Details](https://developer.aymakan.com.sa/docs/2/shipments-by-reference)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Cancel Shipping
@@ -189,7 +220,7 @@ Below is an example of how to Cancel Shipment :
 $response = $client->cancelShipment(['tracking' => "AY120266"]);
 echo $response . "\n";
 ```
-[Cancel Shipment API Details](https://developer.aymakan.com.sa/docs/1.0/cancel-shipping)
+[Cancel Shipment API Details](https://developer.aymakan.com.sa/docs/2/cancel-shipping)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Cancel Shipping Using Reference
@@ -215,7 +246,7 @@ $response = $client->cancelShipmentByReference(['200018179','test-200018179'])
 echo $response . "\n";
 ```
 
-[Cancel shipment By Reference API Details](https://developer.aymakan.com.sa/docs/1.0/cancel-shipping-by-reference)
+[Cancel shipment By Reference API Details](https://developer.aymakan.com.sa/docs/2/cancel-shipping-by-reference)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Shipping AWB label Printing
@@ -235,7 +266,7 @@ returns a URL to download the pdf file for all AWB
 $response = $client->getShipmentLabel("AY120266");
 echo $response . "\n";
 ```
-[Shipping AWB label Printing API Details](https://developer.aymakan.com.sa/docs/1.0/shipping-awb-label)
+[Shipping AWB label Printing API Details](https://developer.aymakan.com.sa/docs/2/shipping-awb-label)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Bulk Shipping AWB label Printing
@@ -257,7 +288,7 @@ this API returns a URL to download the pdf file for all AWB.
 $client->getBulkShipmentLabel(['AY669001659', '143862', '143866', '143892']);
 echo $response . "\n";
 ```
-[Bulk Shipping AWB label Printing API Details](https://developer.aymakan.com.sa/docs/1.0/bulk-awb-labels)
+[Bulk Shipping AWB label Printing API Details](https://developer.aymakan.com.sa/docs/2/bulk-awb-labels)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Customer Shipping
@@ -269,7 +300,7 @@ Below is an example on how to make the Customer Shippings API call:
 $response = $client->getCustomerShipments();
 echo $response . "\n";
 ```
-[Customer Shipping  API Details](https://developer.aymakan.com.sa/docs/1.0/customer-shipping)
+[Customer Shipping  API Details](https://developer.aymakan.com.sa/docs/2/customer-shipping)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ----
@@ -281,7 +312,7 @@ This API fetches all current customer pickup requests.
 $response = $client->pickupRequest()
 echo $response . "\n";
 ```
-[Get Pickup Requests API Details](https://developer.aymakan.com.sa/docs/1.0/pickup-requests)
+[Get Pickup Requests API Details](https://developer.aymakan.com.sa/docs/2/pickup-requests)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Create pickup request
@@ -309,7 +340,7 @@ $data = array(
 $response = $client->createPickupRequest($data)
 echo $response . "\n";
 ```
-[Create Pickup Request API Details](https://developer.aymakan.com.sa/docs/1.0/create-pickup-request)
+[Create Pickup Request API Details](https://developer.aymakan.com.sa/docs/2/create-pickup-request)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Cancel pickup request
@@ -327,7 +358,7 @@ $data = array(
 $response = $client->cancelPickupRequest($data)
 echo $response . "\n";
 ```
-[Cancel Pickup Request API Details](https://developer.aymakan.com.sa/docs/1.0/cancel-pickup-request)
+[Cancel Pickup Request API Details](https://developer.aymakan.com.sa/docs/2/cancel-pickup-request)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Time slots
@@ -341,7 +372,7 @@ Below is an example on how to fetch all time slots available to current customer
 $response = $client->timeSlots("2022-12-02")
 echo $response . "\n";
 ```
-[Time Slots API Details](https://developer.aymakan.com.sa/docs/1.0/time-slots)
+[Time Slots API Details](https://developer.aymakan.com.sa/docs/2/time-slots)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 -----
@@ -360,7 +391,7 @@ $response = $client->getAddress();
 echo $response . "\n";
 ```
 
-[Get Address API Details](https://developer.aymakan.com.sa/docs/1.0/customer-address-get)
+[Get Address API Details](https://developer.aymakan.com.sa/docs/2/customer-address-get)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Create Address
@@ -398,7 +429,7 @@ $response = $client->createAddress($data);
 echo $response . "\n";
 ```
 
-[Create Address API Details](https://developer.aymakan.com.sa/docs/1.0/customer-address-add)
+[Create Address API Details](https://developer.aymakan.com.sa/docs/2/customer-address-add)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Update Address
@@ -438,7 +469,7 @@ $response = $client->updateAddress($data);
 echo $response . "\n";
 ```
 
-[Update Address API Details](https://developer.aymakan.com.sa/docs/1.0/customer-address-update)
+[Update Address API Details](https://developer.aymakan.com.sa/docs/2/customer-address-update)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Delete Address
@@ -462,7 +493,7 @@ $response = $client->deleteAddress($data);
 var_dump($response);
 ```
 
-[Delete Address API Details](https://developer.aymakan.com.sa/docs/1.0/customer-address-delete)
+[Delete Address API Details](https://developer.aymakan.com.sa/docs/2/customer-address-delete)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ----
@@ -481,7 +512,7 @@ $response = $client->getWebHook();
 echo $response . "\n";
 ```
 
-[Get Webhooks API Details](https://developer.aymakan.com.sa/docs/1.0/web-hooks-get)
+[Get Webhooks API Details](https://developer.aymakan.com.sa/docs/2/web-hooks-get)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Add Webhook
@@ -504,7 +535,7 @@ $response = $client->createWebHook($data);
 echo $response . "\n";
 ```
 
-[Add Webhook API Details](https://developer.aymakan.com.sa/docs/1.0/web-hooks-add)
+[Add Webhook API Details](https://developer.aymakan.com.sa/docs/2/web-hooks-add)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Update Webhook
@@ -529,7 +560,7 @@ $response = $client->updateWebHook($data);
 echo $response . "\n";
 ```
 
-[Update Webhook API Details](https://developer.aymakan.com.sa/docs/1.0/web-hooks-update)
+[Update Webhook API Details](https://developer.aymakan.com.sa/docs/2/web-hooks-update)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Delete Webhook
@@ -542,5 +573,5 @@ $response = $client->deleteWebHook()
 echo $response . "\n";
 ```
 
-[Delete Webhooks API Details](https://developer.aymakan.com.sa/docs/1.0/web-hooks-delete)
+[Delete Webhooks API Details](https://developer.aymakan.com.sa/docs/2/web-hooks-delete)
 <p align="right">(<a href="#top">back to top</a>)</p>

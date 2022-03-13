@@ -7,7 +7,7 @@ use Exception;
 class Client
 {
 
-    private string $url = 'https://dev-api.aymakan.com.sa';
+    private string $url = 'https://api.aymakan.net/v2';
     private string $api_key = "";
     private bool $testing = false;
 
@@ -135,6 +135,17 @@ class Client
     public function createShipment($data)
     {
         return $this->callAPI('POST', $this->url . '/shipping/create', $data);
+    }
+
+    /**
+     * Creates a bulk shipments
+     * @param $data
+     * @return mixed
+     * @throws Exception
+     */
+    public function createBulkShipment($data)
+    {
+        return $this->callAPI('POST', $this->url . '/shipping/create/bulk_shipping', $data);
     }
 
     /**
